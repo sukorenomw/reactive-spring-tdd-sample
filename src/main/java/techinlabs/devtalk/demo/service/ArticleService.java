@@ -1,5 +1,6 @@
 package techinlabs.devtalk.demo.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -10,13 +11,10 @@ import techinlabs.devtalk.demo.repository.ArticleRepository;
 @Service
 public class ArticleService {
 
-  private final ArticleRepository articleRepository;
+  @Autowired
+  ArticleRepository articleRepository;
 
-  public ArticleService(ArticleRepository articleRepository) {
-    this.articleRepository = articleRepository;
-  }
-
-  public Flux<Article> getAll(){
+  public Flux<Article> findAll(){
     return articleRepository.findAll();
   }
 
@@ -24,4 +22,9 @@ public class ArticleService {
     return articleRepository.findById(id)
         .switchIfEmpty(Mono.error(NotFoundException::new));
   }
+
+  public Mono<Article> create(Article article){
+    return articleRepository.save(article);
+  }
+
 }

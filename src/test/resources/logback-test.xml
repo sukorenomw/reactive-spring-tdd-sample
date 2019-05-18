@@ -4,5 +4,5 @@
   <logger name="org.springframework" level="ERROR"/>
   <logger name="org.mongodb" level="ERROR"/>
   <logger name="ma.glasnost" level="ERROR"/>
-  <logger name="techinlabs.devtalk.demo" level="ERROR"/>
+  <logger name="com.tiket.tix" level="ERROR"/>
 </configuration>

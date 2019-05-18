@@ -23,48 +23,54 @@ public class ArticleServiceTest {
   private ArticleRepository articleRepository;
 
   @Test
-  public void getAllTest() {
+  public void findAllTest(){
+
     Article article1 = Article.builder()
         .id("1")
-        .title("article a")
+        .title("article 1")
         .build();
 
     Article article2 = Article.builder()
         .id("2")
-        .title("article b")
+        .title("article 2")
         .build();
 
     Mockito.when(articleRepository.findAll())
         .thenReturn(Flux.just(article1, article2));
 
-    StepVerifier.create(articleService.getAll())
+    StepVerifier.create(articleService.findAll())
         .expectNext(article1)
         .expectNext(article2)
-        .verifyComplete();
+        .expectComplete()
+        .verify();
+
   }
 
   @Test
-  public void findOneTest() {
-    Article article = Article.builder()
-        .id("2")
-        .title("article b")
+  public void findOneTest(){
+    Article article1 = Article.builder()
+        .id("1")
+        .title("article 1")
         .build();
 
-    Mockito.when(articleRepository.findById("2"))
-        .thenReturn(Mono.just(article));
+    Mockito.when(articleRepository.findById(Mockito.anyString()))
+        .thenReturn(Mono.just(article1));
 
-    StepVerifier.create(articleService.findOne("2"))
-        .expectNext(article)
-        .verifyComplete();
+    StepVerifier.create(articleService.findOne("1"))
+        .expectNext(article1)
+        .expectComplete()
+        .verify();
+
   }
 
   @Test
-  public void findOneFailedTest() {
+  public void findOneFailedTest(){
     Mockito.when(articleRepository.findById(Mockito.anyString()))
         .thenReturn(Mono.empty());
 
-    StepVerifier.create(articleService.findOne("-1"))
+    StepVerifier.create(articleService.findOne("somehing"))
         .expectError(NotFoundException.class)
         .verify();
   }
+
 }
